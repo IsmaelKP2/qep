@@ -33,6 +33,18 @@ spec:
         # manifest file. Can you find the other 2 settings?
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: "http://$(NODE_IP):4317"
+        - name: SPLUNK_OTEL_AGENT
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://$(SPLUNK_OTEL_AGENT):4317"
+        - name: OTEL_SERVICE_NAME
+          value: "creditprocessorservice"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "deployment.environment=$(hostname)-apm-env,version=2.0"
+        - name: OTEL_PROPAGATORS
+          value: "b3multi"
         resources:
           requests:
             cpu: 110m
