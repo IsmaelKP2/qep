@@ -337,7 +337,8 @@ spec:
       containers:
       - name: paymentservice
         #image: quay.io/signalfuse/microservices-demo-paymentservice:433c23881a
-        image: quay.io/signalfuse/microservices-demo-paymentservice:a728a64c18
+        #image: quay.io/signalfuse/microservices-demo-paymentservice:a728a64c18
+        image: ghcr.io/billg-splunk/pays:master 
         imagePullPolicy: Always
         ports:
         - containerPort: 50051
@@ -896,4 +897,127 @@ spec:
       - name: rum-loadgen
         image:  quay.io/phagen/rumloadgen:5.1
         imagePullPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creditcheckservice 
+spec:
+  selector:
+    matchLabels:
+      app: creditcheckservice
+  template:
+    metadata:
+      labels:
+        app: creditcheckservice
+    spec:
+      tolerations:
+      nodeSelector:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: creditcheckservice
+        image: docker.io/library/credit-check-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8888
+        env:
+        - name: PORT
+          value: "8888"
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: SPLUNK_OTEL_AGENT
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://$(SPLUNK_OTEL_AGENT):4317"
+        - name: OTEL_SERVICE_NAME
+          value: "creditcheckservice"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "deployment.environment=${INSTANCE}-apm-env,version=2.0"
+        - name: OTEL_PROPAGATORS
+          value: "b3multi"
+        resources:
+          requests:
+            cpu: 110m
+            memory: 90Mi
+          limits:
+            cpu: 130m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: creditcheckservice
+spec:
+  type: ClusterIP
+  selector:
+    app: creditcheckservice
+  ports:
+  - protocol: TCP
+    port: 8888
+    targetPort: 8888
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: creditprocessorservice 
+spec:
+  selector:
+    matchLabels:
+      app: creditprocessorservice
+  template:
+    metadata:
+      labels:
+        app: creditprocessorservice
+    spec:
+      tolerations:
+      nodeSelector:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: creditprocessorservice
+        #image: quay.io/billg/creditprocessorservice:latest
+        image: ghcr.io/billg-splunk/cps:main
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8899
+        env:
+        - name: PORT
+          value: "8899"
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: SPLUNK_OTEL_AGENT
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://$(SPLUNK_OTEL_AGENT):4317"
+        - name: OTEL_SERVICE_NAME
+          value: "creditcheckservice"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "deployment.environment=${INSTANCE}-apm-env,version=2.0"
+        resources:
+          requests:
+            cpu: 110m
+            memory: 90Mi
+          limits:
+            cpu: 130m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: creditprocessorservice
+spec:
+  type: ClusterIP
+  selector:
+    app: creditprocessorservice
+  ports:
+  - protocol: TCP
+    port: 8899
+    targetPort: 8899
 
