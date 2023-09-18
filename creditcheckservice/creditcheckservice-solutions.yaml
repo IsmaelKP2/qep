@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: creditcheckservice
-        image: docker.io/library/credit-check-service:latest
+        image: localhost/credit-check-service:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 8888
@@ -36,7 +36,7 @@ spec:
         - name: OTEL_SERVICE_NAME
           value: "creditcheckservice"
         - name: OTEL_RESOURCE_ATTRIBUTES
-          value: "deployment.environment=jtjl-apm-env"
+          value: "deployment.environment={{addhost}}-apm-env"
         - name: OTEL_PROPAGATORS
           value: "b3multi"         
         resources:
