@@ -917,7 +917,7 @@ spec:
       containers:
       - name: creditcheckservice
         image: localhost/credit-check-service:latest
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 8888
         env:
