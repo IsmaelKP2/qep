@@ -1,0 +1,5 @@
+mkdir $HOME/.config/containers
+cat .config/containers/registries.conf
+vim ~/.config/containers/registries.conf 
+paste 
+unqualified-search-registries = ["docker.io"]
