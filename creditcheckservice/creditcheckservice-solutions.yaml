@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: creditcheckservice
-        image: localhost/credit-check-service:latest
+        image: localhost/credit-check-service:latest #ismapro/credit-check-service
         imagePullPolicy: Always
         ports:
         - containerPort: 8888
