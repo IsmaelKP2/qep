@@ -12,8 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy main app
 COPY main.py .
 
-# Initialise Splunk APM
-RUN splunk-py-trace-bootstrap
-
 # Set the entrypoint command to run the application
-CMD ["splunk-py-trace","python3", "main.py"]
+CMD ["python3", "main.py"]

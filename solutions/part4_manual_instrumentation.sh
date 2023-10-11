@@ -10,7 +10,7 @@
 #
 # (1) Build the credit-check-service app
 #docker build -t credit-check-service:latest .
-docker build -t credit-check-service-part4:latest part4 -f part4/Dockerfile.solutions2
+docker build -t credit-check-service-part4:latest part4 -f part4/Dockerfile.solutions4
 # (2) Export the image from docker
 docker save --output credit-check-service-part4.tar credit-check-service-part4:latest
 

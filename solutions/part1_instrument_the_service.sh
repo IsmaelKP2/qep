@@ -9,13 +9,13 @@
 # (5) Find and delete the pod (so it is redeployed)
 #
 # (1) Build the credit-check-service app
-docker build -t credit-check-service:latest .
+docker build -t credit-check-service-part1:latest part1 -f part1/Dockerfile.solutions1
 
 # (2) Export the image from docker
-docker save --output credit-check-service-part2.tar credit-check-service-part2:latest
+docker save --output credit-check-service-part1.tar credit-check-service-part1:latest
 
 # (3) Import it into k3s
-sudo k3s ctr images import credit-check-service-part2.tar
+sudo k3s ctr images import credit-check-service-part1.tar
 
 # (5) Find and delete the pod (so it is redeployed)
 podlist=$(kubectl get pods)
@@ -30,6 +30,6 @@ echo ""
 echo Redeployed creditcheckservice.
 
 #add hostname in the yaml file
-sed -i "s/{{addhost}}/$HOSTNAME/" creditcheckservice-solutions.yaml
+sed -i "s/{{addhost}}/$HOSTNAME/" part1/creditcheckservice-solutions-part1.yaml
 #deploy the pod from credicheckservice-solutions.yaml 
-kubectl apply -f creditcheckservice-solutions.yaml
+kubectl apply -f part1/creditcheckservice-solutions-part1.yaml

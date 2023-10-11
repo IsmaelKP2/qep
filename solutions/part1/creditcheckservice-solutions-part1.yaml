@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: creditcheckservice
-        image: docker.io/library/credit-check-service-part1:latest #ismapro/credit-check-service
+        image: docker.io/library/credit-check-service-part1:latest 
         imagePullPolicy: Never
         ports:
         - containerPort: 8888
