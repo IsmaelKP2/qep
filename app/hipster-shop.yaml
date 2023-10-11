@@ -927,18 +927,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
-        - name: SPLUNK_OTEL_AGENT
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: "http://$(SPLUNK_OTEL_AGENT):4317"
-        - name: OTEL_SERVICE_NAME
-          value: "creditcheckservice"
-        - name: OTEL_RESOURCE_ATTRIBUTES
-          value: "deployment.environment={{addhost}}-apm-env,version=2.0"
-        - name: OTEL_PROPAGATORS
-          value: "b3multi"
         resources:
           requests:
             cpu: 110m
