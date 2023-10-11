@@ -336,9 +336,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: paymentservice
-        #image: quay.io/signalfuse/microservices-demo-paymentservice:433c23881a
-        #image: quay.io/signalfuse/microservices-demo-paymentservice:a728a64c18
-        image: ghcr.io/billg-splunk/pays:master 
+        image: ghcr.io/billg-splunk/pays:master
         imagePullPolicy: Always
         ports:
         - containerPort: 50051
