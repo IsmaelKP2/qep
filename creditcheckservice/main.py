@@ -1,8 +1,8 @@
 import requests
-# UNCOMMENT THE NEXT TWO LINES TO COMPLETE THE AUTO-INSTRUMENTATION
+# UNCOMMENT THE NEXT TWO LINES TO IMPORT THE INSTRUMENTATION LIBRARY
 # from opentelemetry import trace
 # from opentelemetry.sdk.trace import TracerProvider
-# UNCOMMENT THE NEXT TWO LINES TO COMPLETE THE AUTO-INSTRUMENTATION
+# UNCOMMENT THE NEXT TWO LINES TO INSTANTIATE THE TRACER
 # provider = TracerProvider()
 # tracer = trace.get_tracer(__name__)
 
@@ -20,8 +20,6 @@ def test_it():
     return 'OK'
 
 @app.route('/check')
-# UNCOMMENT THE NEXT LINE TO COMPLETE THE AUTO-INSTRUMENTATION
-#@tracer.start_as_current_span("credit_check")
 def credit_check():
     customerNum = request.args.get('customernum')
     
@@ -36,11 +34,7 @@ def credit_check():
 
     return checkResult
 
-# UNCOMMENT THE NEXT LINE TO COMPLETE THE AUTO-INSTRUMENTATION
-#@tracer.start_as_current_span("credit_score")
 def getCreditCategoryFromScore(score):
-    # UNCOMMENT THE NEXT LINE TO COMPLETE THE AUTO-INSTRUMENTATION
-    #current_span = trace.get_current_span()
     creditScoreCategory = ''
     match score:
         case num if num > 850:
@@ -57,8 +51,6 @@ def getCreditCategoryFromScore(score):
             creditScoreCategory = 'poor'
         case _:
             creditScoreCategory = 'impossible'
-    # UNCOMMENT THE NEXT LINE TO COMPLETE THE AUTO-INSTRUMENTATION
-    #current_span.set_attribute("creditScoreCat", (creditScoreCategory))
     return creditScoreCategory
 
 if __name__ == '__main__':
