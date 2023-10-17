@@ -27,6 +27,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        #add otel instrumentation above this line 
+        - name: OTEL_PROPAGATORS
+          value: "b3multi" 
         resources:
           requests:
             cpu: 110m
